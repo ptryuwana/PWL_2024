@@ -17,11 +17,15 @@
 //     return view('welcome');
 // });
 
-use Illuminate\Support\Facades\Route; 
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\WelcomeController;
+use Illuminate\Support\Facades\Route;
  
-Route::get('/hello', function (){
-    return 'Hello World';
-});
+Route::get('/hello', [WelcomeController::class,'hello']);
 
 Route::get('/world', function () {
     return 'World';
@@ -31,9 +35,9 @@ Route::get('/welcome', function(){
     return 'Selamat Datang';
 });
 
-Route::get('/about', function(){
-    return 'Nama: Putra Nindya Yuwana | NIM: 2241720089';
-});
+// Route::get('/about', function(){
+//     return 'Nama: Putra Nindya Yuwana | NIM: 2241720089';
+// });
 
 // Route::get('/user/{name}', function ($name) {
 //     return 'Nama saya '.$name;
@@ -43,9 +47,9 @@ Route::get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
     return 'Pos ke-'.$postId." Komentar ke-: ".$commentId;
 });
 
-Route::get('/articles/{id}', function ($id) {
-    return 'Halaman Artikel dengan ID '. $id;
-}); 
+// Route::get('/articles/{id}', function ($id) {
+//     return 'Halaman Artikel dengan ID '. $id;
+// }); 
 
 // Route::get('/user/{name?}', function ($name=null) { 
 //     return 'Nama saya '.$name; 
@@ -84,3 +88,19 @@ Route::get('/user/profile', function() {
 //     Route::get('/post', [PostController::class, 'index']); 
 //     Route::get('/event', [EventController::class, 'index']);  
 // }); 
+
+Route::middleware('auth')->group(function(){
+    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/about', [AboutController::class, 'index']);
+    Route::get('/articles', [ArticlesController::class, 'index']);
+});
+
+Route::resource('photos', PhotoController::class);
+
+Route::resource('photos', PhotoController::class)->only([
+    'index', 'show'
+]);
+
+Route::resource('photos', PhotoController::class)->except([ 
+    'create', 'store', 'update', 'destroy'
+]);
