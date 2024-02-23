@@ -89,11 +89,9 @@ Route::get('/user/profile', function() {
 //     Route::get('/event', [EventController::class, 'index']);  
 // }); 
 
-Route::middleware('auth')->group(function(){
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/about', [AboutController::class, 'index']);
     Route::get('/articles', [ArticlesController::class, 'index']);
-});
 
 Route::resource('photos', PhotoController::class);
 
@@ -104,3 +102,9 @@ Route::resource('photos', PhotoController::class)->only([
 Route::resource('photos', PhotoController::class)->except([ 
     'create', 'store', 'update', 'destroy'
 ]);
+
+// Route::get('/greeting', function(){
+//     return view('blog.hello', ['name'=>'Putra']);
+// });
+
+Route::get('/greeting', [WelcomeController::class, 'greeting']);
